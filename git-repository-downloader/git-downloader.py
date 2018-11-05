@@ -16,13 +16,13 @@ def check_and_create_dir(path):
 
 def download_file(base_url, local_dir, relative_path):
     remote_path = base_url + "/" + relative_path
-    local_path = local_dir + "\\" + relative_path.replace("/", "\\")
+    local_path = os.path.join(local_dir, relative_path)
 
     print "downloading the file from %s to %s" % (remote_path, local_path)
 
     r = requests.get(remote_path, stream=True)
     if r.status_code == 200:
-        check_and_create_dir(local_path[0: local_path.rfind("\\")])
+        check_and_create_dir(local_path[0: local_path.rfind("/")])
         with open(local_path, "wb+") as f:
             for chunk in r.iter_content(chunk_size=1024):
                 if chunk: # filter out keep-alive new chunks
@@ -54,7 +54,7 @@ url = sys.argv[1]
 working_dir = url
 working_dir = working_dir.replace("http://", "")
 working_dir = working_dir.replace("http://", "")
-working_dir = os.getcwd() + "\\" + working_dir
+working_dir = os.path.join(os.getcwd(), working_dir)
 
 print "Set the working directory: %s" % working_dir
 
@@ -100,10 +100,10 @@ while True:
 
     # Download missing objects
     for SHA1 in SHA1s:
-        git_path = ".git\\objects\\" + SHA1[0:2] + "\\" + SHA1[2:40]
-        path = working_dir + "\\" + git_path
+        git_path = os.path.join(".git","objects", SHA1[0:2], SHA1[2:40])
+        path = os.path.join(working_dir, git_path)
         if not os.path.isfile(path):
-            download_file(url, working_dir, git_path.replace("\\", "/"))
+            download_file(url, working_dir, git_path)
 
 print "Downloading complete"
 
