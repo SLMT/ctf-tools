@@ -1,15 +1,24 @@
-# Git Repository Downloader
+# Git Repository Downloader (Linux and Windows)
+## Basic idea
+Ever found a `.git ` directory on a webserver? This tool will try to download this file and recreate the most recent commit of this downloaded repository. Useful for reconnaissance and further analysis of attack vectors.
 
-We love using git. Many web developers love, too. The developers usually treat the whole directory containing a website as a git repository. In this case, a directory `.git` appears inside the directory of the web pages. Sometimes someone putting a website in public forgets to close the permission of downloading the contents of directory `.git`. Although we might not have the permission of listing the files inside `.git`, we can still figure out what exactly are inside `.git` using the knowledge of git internals.
+## Functionality
+As git has a naming convention of its files. Sometimes we are not allowed to see the contents of the git directory on the webserver, but still are able to download it. This tool tries to download those git files and recreates the repository locally.
 
-After reading the documents about [git internals](https://git-scm.com/book/en/v1/Git-Internals), I wrote this script to automatically download and recover the git repository of a given website. The website should open the permission of downloading the contents inside directory `.git`. Otherwise, this script will not work.
 
 ## Requirement
 
-- Python 2 (I am not sure if it can work on Python 3)
-- [HTTP Requests Library for Python](https://github.com/kennethreitz/requests)
+- Python 2 or 3
 
-If you have already had Python, just use `pip install requests` to install the Requests library.
+```
+# Python 2
+pip install -r requirements.txt
+
+# Python 3
+pip3 install -r python3_requirements.txt
+```
+
+
 
 ## Usage
 
