@@ -19,7 +19,7 @@ def download_file(base_url, local_dir, relative_path):
     remote_path = base_url + "/" + relative_path
     local_path = os.path.join(local_dir, relative_path)
 
-    print ("Downloading the file from {remote_path} to {local_path}".format(remote_path, local_path))
+    print ("Downloading the file from {remote} to {local}".format(remote=remote_path, local=local_path))
 
     r = requests.get(remote_path, stream=True)
     if r.status_code == 200:
@@ -29,7 +29,7 @@ def download_file(base_url, local_dir, relative_path):
                 if chunk: # filter out keep-alive new chunks
                     f.write(chunk)
     else:
-        print ("cannot download {remote_path} (status code: {r.status_code})".format(remote_path, r.status_code))
+        print ("cannot download {remote} (status code: {code})".format(remote=remote_path, code=r.status_code))
 
 def exec_and_cap_output(cmd, working_dir):
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=working_dir)
@@ -38,7 +38,7 @@ def exec_and_cap_output(cmd, working_dir):
 
 def find_sha1(message):
     SHA1s = []
-    for m in re.finditer(r"\b[0-9a-f]{40}\b", message):
+    for m in re.finditer(r"\b[0-9a-f]{40}\b", message.decode('utf-8')):
         SHA1s.append(m.group(0))
     return SHA1s
 
@@ -57,7 +57,7 @@ working_dir = working_dir.replace("http://", "")
 working_dir = working_dir.replace("http://", "")
 working_dir = os.path.join(os.getcwd(), working_dir)
 
-print ("Set the working directory: {}").format(working_dir)
+print ("Set the working directory: {}".format(working_dir))
 
 # TODO: If the directory exists, delete it maybe ?
 check_and_create_dir(working_dir)
