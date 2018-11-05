@@ -29,7 +29,7 @@ def download_file(base_url, local_dir, relative_path):
                 if chunk: # filter out keep-alive new chunks
                     f.write(chunk)
     else:
-        print ("cannot download {remote} (status code: {code})".format(remote=remote_path, code=r.status_code))
+        print ("Cannot download {remote} (status code: {code})".format(remote=remote_path, code=r.status_code))
 
 def exec_and_cap_output(cmd, working_dir):
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=working_dir)
@@ -53,7 +53,6 @@ url = sys.argv[1]
 
 # Set my working directory for executing commands
 working_dir = url
-working_dir = working_dir.replace("http://", "")
 working_dir = working_dir.replace("http://", "")
 working_dir = os.path.join(os.getcwd(), working_dir)
 
