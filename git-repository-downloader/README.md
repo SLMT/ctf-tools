@@ -20,7 +20,7 @@ pip3 install -r python3_requirements.txt
 
 # On Windows
 
-** git must be inside PATH, or it will fail! **
+**git must be inside PATH, or it will fail!**
 
 
 
