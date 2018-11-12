@@ -1,3 +1,4 @@
+from __future__ import print_function
 import requests
 import os
 import errno
@@ -16,19 +17,19 @@ def check_and_create_dir(path):
 
 def download_file(base_url, local_dir, relative_path):
     remote_path = base_url + "/" + relative_path
-    local_path = local_dir + "\\" + relative_path.replace("/", "\\")
+    local_path = os.path.join(local_dir, relative_path)
 
-    print "downloading the file from %s to %s" % (remote_path, local_path)
+    print ("Downloading the file from {remote} to {local}".format(remote=remote_path, local=local_path))
 
     r = requests.get(remote_path, stream=True)
     if r.status_code == 200:
-        check_and_create_dir(local_path[0: local_path.rfind("\\")])
+        check_and_create_dir(local_path[0: local_path.rfind("/")])
         with open(local_path, "wb+") as f:
             for chunk in r.iter_content(chunk_size=1024):
                 if chunk: # filter out keep-alive new chunks
                     f.write(chunk)
     else:
-        print "cannot download %s (status code: %d)" % (remote_path, r.status_code)
+        print ("Cannot download {remote} (status code: {code})".format(remote=remote_path, code=r.status_code))
 
 def exec_and_cap_output(cmd, working_dir):
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=working_dir)
@@ -37,13 +38,13 @@ def exec_and_cap_output(cmd, working_dir):
 
 def find_sha1(message):
     SHA1s = []
-    for m in re.finditer(r"\b[0-9a-f]{40}\b", message):
+    for m in re.finditer(r"\b[0-9a-f]{40}\b", message.decode('utf-8')):
         SHA1s.append(m.group(0))
     return SHA1s
 
 # Read command line arguments
 if len(sys.argv) < 2:
-    print "Usage: python %s [URL]" % sys.argv[0]
+    print ("Usage: python {} [URL]".format(sys.argv[0]))
     sys.exit(1)
 
 url = sys.argv[1]
@@ -53,10 +54,10 @@ url = sys.argv[1]
 # Set my working directory for executing commands
 working_dir = url
 working_dir = working_dir.replace("http://", "")
-working_dir = working_dir.replace("http://", "")
-working_dir = os.getcwd() + "\\" + working_dir
+working_dir = working_dir.replace(":" , "_")
+working_dir = os.path.join(os.getcwd(), working_dir)
 
-print "Set the working directory: %s" % working_dir
+print ("Set the working directory: {}".format(working_dir))
 
 # TODO: If the directory exists, delete it maybe ?
 check_and_create_dir(working_dir)
@@ -100,12 +101,12 @@ while True:
 
     # Download missing objects
     for SHA1 in SHA1s:
-        git_path = ".git\\objects\\" + SHA1[0:2] + "\\" + SHA1[2:40]
-        path = working_dir + "\\" + git_path
+        git_path = ".git/objects/{}/{}".format(SHA1[0:2], SHA1[2:40])
+        path = os.path.join(working_dir, git_path)
         if not os.path.isfile(path):
-            download_file(url, working_dir, git_path.replace("\\", "/"))
+            download_file(url, working_dir, git_path)
 
-print "Downloading complete"
+print ("Downloading complete")
 
 # Checking out the master branch
 exec_and_cap_output(["git", "checkout", "master"], working_dir)
