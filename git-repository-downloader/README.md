@@ -6,7 +6,7 @@ Ever found a `.git ` directory on a webserver? This tool will try to download th
 As git has a naming convention of its files. Sometimes we are not allowed to see the contents of the git directory on the webserver, but still are able to download it. This tool tries to download those git files and recreates the repository locally.
 
 
-## Requirement
+## Requirements
 
 - Python 2 or 3
 - git
@@ -18,9 +18,9 @@ pip install -r requirements.txt
 pip3 install -r python3_requirements.txt
 ```
 
-#On Windows
+# On Windows
 
-*git must be inside PATH, or it will fail!*
+** git must be inside PATH, or it will fail! **
 
 
 
