@@ -30,4 +30,4 @@ pip3 install -r python3_requirements.txt
 python git-downloader.py [URL]
 ```
 
-`[URL]` is the url to the target website. For example, if you want to download `http://example.com/.git`, the `[URL]` should be `http://example.com`.
+`[URL]` is the url to the target website. For example, if you want to download `http://example.com[:port]/.git`, the `[URL]` should be `http://example.com[:port]`.
