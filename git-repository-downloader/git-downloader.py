@@ -54,6 +54,7 @@ url = sys.argv[1]
 # Set my working directory for executing commands
 working_dir = url
 working_dir = working_dir.replace("http://", "")
+working_dir = working_dir.replace(":" , "_")
 working_dir = os.path.join(os.getcwd(), working_dir)
 
 print ("Set the working directory: {}".format(working_dir))
@@ -100,7 +101,7 @@ while True:
 
     # Download missing objects
     for SHA1 in SHA1s:
-        git_path = os.path.join(".git","objects", SHA1[0:2], SHA1[2:40])
+        git_path = ".git/objects/{}/{}".format(SHA1[0:2], SHA1[2:40])
         path = os.path.join(working_dir, git_path)
         if not os.path.isfile(path):
             download_file(url, working_dir, git_path)

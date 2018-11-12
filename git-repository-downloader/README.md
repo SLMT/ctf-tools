@@ -9,7 +9,7 @@ As git has a naming convention of its files. Sometimes we are not allowed to see
 ## Requirement
 
 - Python 2 or 3
-
+- git
 ```
 # Python 2
 pip install -r requirements.txt
@@ -17,6 +17,10 @@ pip install -r requirements.txt
 # Python 3
 pip3 install -r python3_requirements.txt
 ```
+
+#On Windows
+
+*git must be inside PATH, or it will fail!*
 
 
 
